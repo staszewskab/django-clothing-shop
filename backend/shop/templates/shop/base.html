@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Clothing Shop{% endblock %}</title>
+</head>
+<body>
+
+<header>
+    <h1>Shop</h1>
+    <nav>
+        <a href="{% url 'product_list' %}">Products</a>
+        <a href="{% url 'product_add' %}">Add product</a>
+    </nav>
+</header>
+
+<hr>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>
