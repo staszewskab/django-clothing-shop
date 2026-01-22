@@ -1,8 +1,11 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, Order
+from .models import Product, Order, CartItem, OrderItem
 from .forms import ProductForm, RegisterForm
 from django.contrib.auth import login
+from django.contrib import messages
 
 def product_list(request):
     products = Product.objects.filter(available=True)
@@ -22,6 +25,7 @@ def product_add(request):
         form = ProductForm()
     return render(request, 'shop/product_form.html', {'form': form})
 
+@staff_member_required
 def product_edit(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
@@ -46,6 +50,68 @@ def register(request):
     return render(request, "registration/register.html", {"form": form})
 
 @login_required
+def add_to_cart(request,product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    quantity = int(request.POST.get('quantity',1))
+
+    cart_item, created = CartItem.objects.get_or_create(user=request.user ,product=product)
+
+    if not created:
+        current_quantity = cart_item.quantity
+    else:
+        current_quantity = 0
+    new_quantity = quantity + current_quantity
+
+    if new_quantity >= product.stock:
+        cart_item.quantity = product.stock
+        messages.warning(request, f"Maximum available quantity for {product.name} is {product.stock}")
+    else:
+        cart_item.quantity = new_quantity
+    cart_item.save()
+
+    return redirect('cart_detail')
+
+@login_required
+def cart_detail(request):
+    cart_items = request.user.cart_items.select_related('product')
+    total = sum(item.total_price for item in cart_items)
+
+    if request.method == 'POST':
+        if not cart_items.exists():
+            return render(request, 'shop/cart.html',
+                          {'cart_items': cart_items, 'total': total,
+                           'error': 'Your cart is empty!'})
+
+        insufficient_stock_items = []
+
+        with transaction.atomic():
+            for item in cart_items:
+                if item.quantity > item.product.stock:
+                    insufficient_stock_items.append(item.product.name)
+                    item.delete()
+
+            if insufficient_stock_items:
+                return render(request, 'shop/cart.html',
+                      {'cart_items': request.user.cart_items.select_related('product'),
+                       'total': sum(item.quantity for item in request.user.cart_items.select_related('product')),
+                       'error': f"Not enough stock for: {','.join(insufficient_stock_items)}. These items were removed from your cart."})
+
+            order = Order.objects.create(user=request.user)
+            for item in cart_items:
+                OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity)
+                item.product.stock -= item.quantity
+                item.product.available = item.product.stock > 0
+                item.product.save()
+
+            cart_items.delete()
+
+        return redirect('orders_list')
+
+    return render(request, 'shop/cart.html', {'cart_items': cart_items, 'total': total})
+
+
+@login_required
 def orders_list(request):
-    orders = request.user.orders.all()
+    orders = request.user.orders.prefetch_related('items').all()
     return render(request,"shop/orders_list.html", {"orders": orders})
+

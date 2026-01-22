@@ -8,12 +8,13 @@
 {% if orders %}
     <ul>
         {% for order in orders %}
-            <li>
-                <strong>{{ order.product.name }}</strong><br>
-                Quantity: {{ order.quantity }}<br>
-                Ordered at: {{ order.ordered_at|date:"Y-m-d H:i" }}
-            </li>
-            <hr>
+            <h3>Order #{{ order.id }} - {{ order.ordered_at }}</h3>
+            <ul>
+                {% for item in order.items.all %}
+                <li>{{ item.quantity }} x {{ item.product.name }} - {{ item.total_price }} zł</li>
+                {% endfor %}
+            </ul>
+            <p>Total: {{ order.total_price }} zł</p>
         {% endfor %}
     </ul>
 {% else %}

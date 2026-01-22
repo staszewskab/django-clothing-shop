@@ -18,6 +18,7 @@
                 <button type="submit">Logout</button>
             </form>
             <a href="{% url 'orders_list' %}">My Orders</a>
+            <a href="{% url 'cart_detail' %}">Cart</a>
         {% else %}
             <a href="{% url 'login' %}">Login</a>
             <a href="{% url 'register' %}">Register</a>

@@ -1,0 +1,33 @@
+{% extends 'shop/base.html' %}
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+<h2>Cart</h2>
+
+{% if cart_items %}
+    <ul>
+        {% for item in cart_items %}
+            <li>{{ item.quantity }} x {{ item.product.name }} - {{ item.total_price }} zł</li>
+        {% endfor %}
+    </ul>
+    <p>Total: {{ total }} zł</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Place Order</button>
+    </form>
+
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+<p>{{ error }}</p>
+
+{% if messages %}
+    <ul>
+        {% for m in messages %}
+            <li>{{ m }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}
