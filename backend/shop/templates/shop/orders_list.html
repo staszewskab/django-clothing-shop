@@ -3,22 +3,24 @@
 {% block title %}My orders{% endblock %}
 
 {% block content %}
-<h2>My orders</h2>
+<div class="orders">
+    <h2>My orders</h2>
 
-{% if orders %}
-    <ul>
+    {% if orders %}
         {% for order in orders %}
-            <h3>Order #{{ order.id }} - {{ order.ordered_at }}</h3>
-            <ul>
-                {% for item in order.items.all %}
-                <li>{{ item.quantity }} x {{ item.product.name }} - {{ item.total_price }} zł</li>
-                {% endfor %}
-            </ul>
+            <div class="order-card">
+                <h3>Order {{ order.id }}</h3>
+                <h4>{{ order.ordered_at }}</h4>
+                <ul>
+                    {% for item in order.items.all %}
+                    <li class="order-item">{{ item.quantity }} x {{ item.product.name }} {{ item.product.price }} zł</li>
+                    {% endfor %}
+                </ul>
             <p>Total: {{ order.total_price }} zł</p>
+            </div>
         {% endfor %}
-    </ul>
-{% else %}
-    <p>You have no orders yet.</p>
-{% endif %}
-
+    {% else %}
+        <p>You have no orders yet.</p>
+    {% endif %}
+</div>
 {% endblock %}

@@ -15,9 +15,10 @@ def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'shop/product_detail.html', {'product': product})
 
+@staff_member_required
 def product_add(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('product_list')
@@ -29,7 +30,7 @@ def product_add(request):
 def product_edit(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product)
+        form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
             return redirect('product_list')

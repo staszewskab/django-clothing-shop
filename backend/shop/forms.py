@@ -6,10 +6,11 @@ from .models import Product, User
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'available','stock','category']
+        fields = ['name','image', 'description', 'price', 'available','stock','category']
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Product name'}),
-            'description': forms.Textarea(attrs={'rows': 5}),
+            'image': forms.ClearableFileInput(),
+            'description': forms.Textarea(attrs={'rows': 5, 'style': 'resize: none;'}),
             'price': forms.NumberInput(attrs={'placeholder': 'Price'}),
             'available': forms.CheckboxInput(),
             'stock' : forms.NumberInput(attrs={'placeholder': 'Stock'}),

@@ -3,17 +3,19 @@
 {% block title %}Products{% endblock %}
 
 {% block content %}
-<h2>Product list</h2>
-
-<ul>
+<div class="product-grid">
     {% for product in products %}
-    <li>
+    <div class="product-card">
         <a href="{% url 'product_detail' product.pk %}">
-            {{ product.name }} - {{ product.price }} zł
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% endif %}
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.price }} zł</p>
         </a>
-    </li>
+    </div>
     {% empty %}
-        <li>No products available.</li>
+        <p>No products available.</p>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}

@@ -3,19 +3,26 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
-<h2>{{ product.name }}</h2>
+<div class="product-detail">
+    <h2>{{ product.name }}</h2>
 
-<p>{{ product.description }}</p>
-<p>Price: {{ product.price }} zł</p>
-<p>Stock: {{ product.stock }}</p>
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% endif %}
+    <div>
+    <p>{{ product.description }}</p>
+    <p class="price">Price: {{ product.price }} zł</p>
+    <p>Stock: {{ product.stock }}</p>
 
-<form method="POST" action="{% url 'add_to_cart' product.id %}">
-    {% csrf_token %}
-    <label>Quantity:</label>
-    <input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1">
-    <button type="submit">Add to cart</button>
-</form>
-
-<a href="{% url 'product_edit' product.pk %}">Edit product</a>
-
+    <form method="POST" action="{% url 'add_to_cart' product.id %}">
+        {% csrf_token %}
+        <label>Quantity:</label>
+        <input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1">
+        <button type="submit">Add to cart</button>
+    </form>
+    </div>
+    {% if user.is_staff %}
+        <a href="{% url 'product_edit' product.pk %}">Edit product</a>
+    {% endif %}
+</div>
 {% endblock %}

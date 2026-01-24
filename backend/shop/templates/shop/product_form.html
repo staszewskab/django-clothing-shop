@@ -3,11 +3,12 @@
 {% block title %}Product form{% endblock %}
 
 {% block content %}
-<h2>Product form</h2>
+<div class="product-form">
+    <form method="post" enctype="multipart/form-data" id="product-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" id="save-button" disabled>Save</button>
+    </form>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
+</div>
 {% endblock %}

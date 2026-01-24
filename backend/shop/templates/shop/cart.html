@@ -2,32 +2,45 @@
 {% block title %}Cart{% endblock %}
 
 {% block content %}
-<h2>Cart</h2>
+<div class="cart">
+    <h2>Cart</h2>
 
-{% if cart_items %}
-    <ul>
-        {% for item in cart_items %}
-            <li>{{ item.quantity }} x {{ item.product.name }} - {{ item.total_price }} zł</li>
-        {% endfor %}
-    </ul>
-    <p>Total: {{ total }} zł</p>
+    {% if cart_items %}
+        <ul class="cart-list">
+            {% for item in cart_items %}
+                <li class="cart-item">
+                    {% if item.product.image %}
+                        <img class="cart-image" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    {% endif %}
 
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit">Place Order</button>
-    </form>
+                    <div class="cart-info">
+                        <strong>{{ item.product.name }}</strong><br>
+                        Quantity: {{ item.quantity }}<br>
+                        Price: {{ item.total_price }} zł
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
 
-{% else %}
-    <p>Your cart is empty.</p>
-{% endif %}
-<p>{{ error }}</p>
+    {% if messages %}
+        <ul class="messages">
+            {% for m in messages %}
+                <li class="m">{{ m }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-{% if messages %}
-    <ul>
-        {% for m in messages %}
-            <li>{{ m }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+        <p class="cart-total">Total: {{ total }} zł</p>
+
+        <form method="POST" class="cart-form">
+            {% csrf_token %}
+            <button type="submit" class="order-button">Place Order</button>
+        </form>
+
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+
+</div>
 
 {% endblock %}

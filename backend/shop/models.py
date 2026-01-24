@@ -19,7 +19,7 @@ class Product(models.Model):
     available = models.BooleanField(default=True)
     stock = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
-    # image = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
 
     def __str__(self):
         return self.name
