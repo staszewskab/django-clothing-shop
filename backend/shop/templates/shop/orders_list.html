@@ -7,13 +7,13 @@
     <h2>My orders</h2>
 
     {% if orders %}
-        {% for order in orders %}
+        {% for order in orders reversed %}
             <div class="order-card">
                 <h3>Order {{ order.id }}</h3>
                 <h4>{{ order.ordered_at }}</h4>
                 <ul>
                     {% for item in order.items.all %}
-                    <li class="order-item">{{ item.quantity }} x {{ item.product.name }} {{ item.product.price }} zł</li>
+                        <li class="order-item">{{ item.quantity }} x {{ item.product.name }} {{ item.product.price }} zł</li>
                     {% endfor %}
                 </ul>
             <p>Total: {{ order.total_price }} zł</p>

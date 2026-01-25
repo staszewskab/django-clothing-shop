@@ -28,4 +28,8 @@ urlpatterns = [
 
     #Orders
     path('orders/', views.orders_list, name='orders_list'),
+
+    #API
+    path('api/orders/', views.api_orders, name='api_orders'),
+    path('api/products/', views.api_products, name='api_products'),
 ]
