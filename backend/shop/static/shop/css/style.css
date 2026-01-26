@@ -318,6 +318,24 @@ input.error ,textarea.error, select.error {
     font-weight: bold;
 }
 
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.field-error {
+    color: darkred;
+    margin-top: 0.3rem;
+    font-size: 0.7rem;
+}
+
+.form-error {
+    background: #ffe5e5;
+    border: 0.15rem solid darkred;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    font-size: 0.7rem;
+}
+
 @media (max-width: 48em) {
     .product-grid {
         grid-template-columns: 1fr;
