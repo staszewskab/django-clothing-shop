@@ -35,7 +35,7 @@ The project demonstrates key web development concepts including user authenticat
 1. **Clone the repository:**
 
 ```bash
-git clone <repository_url>
+git clone https://github.com/staszewskab/django-clothing-shop.git
 cd django-clothing-shop/backend
 ```
 
