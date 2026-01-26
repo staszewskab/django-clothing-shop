@@ -37,31 +37,32 @@ The project demonstrates key web development concepts including user authenticat
 ```bash
 git clone <repository_url>
 cd django-clothing-shop/backend
+```
 
 2. **Create and activate a virtual environment (recommended):**
-
+```bash
 python -m venv venv
 # Windows PowerShell
 .\venv\Scripts\Activate.ps1
 # macOS / Linux
 source venv/bin/activate
-
+```
 3. **Install dependencies (from your own environment or manually):**
-
+```bash
 pip install django djangorestframework pillow
-
+```
 4. **Apply database migrations:**
-
+```bash
 python manage.py migrate
-
+```
 5. **Create a superuser (for admin access):**
-
+```bash
 python manage.py createsuperuser
-
+```
 6. **Run the development server:**
-
+```bash
 python manage.py runserver
-
+```
 7. **Access the application:**
 
 Frontend: http://127.0.0.1:8000/
