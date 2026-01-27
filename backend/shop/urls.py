@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
 
@@ -30,6 +30,5 @@ urlpatterns = [
     path('orders/', views.orders_list, name='orders_list'),
 
     #API
-    path('api/orders/', views.api_orders, name='api_orders'),
-    path('api/products/', views.api_products, name='api_products'),
+    path("api/", include("shop.api.urls")),
 ]

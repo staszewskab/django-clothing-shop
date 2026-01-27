@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Order, OrderItem
+from shop.models import Product, Order, OrderItem
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,7 +9,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     class Meta:
-        model = Order
+        model = OrderItem
         fields = ['product', 'quantity']
 
 class OrderSerializer(serializers.ModelSerializer):

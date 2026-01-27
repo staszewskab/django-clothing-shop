@@ -1,18 +1,11 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from django.contrib.messages.api import success
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, Order, CartItem, OrderItem
+from .models import CartItem, OrderItem
 from .forms import ProductForm, RegisterForm
 from django.contrib.auth import login
-from django.contrib import messages
-
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from .serializers import ProductSerializer, OrderSerializer
 from .models import Product, Order
 
 def product_list(request):
@@ -126,19 +119,3 @@ def cart_detail(request):
 def orders_list(request):
     orders = request.user.orders.prefetch_related('items').all()
     return render(request,"shop/orders_list.html", {"orders": orders})
-
-
-
-@api_view(['GET'])
-def api_products(request):
-    products = Product.objects.filter(available=True)
-    serializer = ProductSerializer(products, many=True, context={'request': request})
-    return Response(serializer.data)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def api_orders(request):
-    orders = request.user.orders.prefetch_related('items').all()
-    serializer = OrderSerializer(orders, many=True, context={'request': request})
-    return Response(serializer.data)
-
